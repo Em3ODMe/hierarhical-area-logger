@@ -1,0 +1,60 @@
+{
+  "name": "hierarchical-area-logger",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "coverage": "vitest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "author": "Roman Jankowski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Em3ODMe/hierarchical-area-logger.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "description": "Hierarchical Area Logger",
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^9.0.0",
+    "prettier": "^3.8.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^3.0.6"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "keywords": [
+    "logger",
+    "logging",
+    "typescript",
+    "nodejs"
+  ]
+}
