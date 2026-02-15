@@ -74,8 +74,8 @@ describe('Logger', () => {
     const logs = logger.dump();
 
     expect(logs.root).toBeDefined();
-    expect(logs.root).toHaveLength(1);
-    expect(logs.root[0].message).toBe('Request received');
+    expect(logs.root).toHaveLength(2);
+    expect(logs.root[1].message).toBe('Request completed');
   });
 
   it('should handle errors in error logging', () => {
@@ -92,6 +92,25 @@ describe('Logger', () => {
     );
   });
 
+  it('should add new records to the log', () => {
+    const logger = createLogger({ details: mockdetails });
+    const areaLogger = logger.getArea('test-area');
+
+    areaLogger.info('test message');
+    areaLogger.warn('test warning');
+    areaLogger.error('test error');
+    areaLogger.debug('test debug');
+    areaLogger.log('test log');
+
+    const logs = logger.dump();
+    expect(logs['test-area']).toHaveLength(5);
+    expect(logs['test-area'][0].message).toBe('test message');
+    expect(logs['test-area'][1].message).toBe('test warning');
+    expect(logs['test-area'][2].message).toBe('test error');
+    expect(logs['test-area'][3].message).toBe('test debug');
+    expect(logs['test-area'][4].message).toBe('test log');
+  });
+
   it('should use default area name when no name provided', () => {
     const logger = createLogger({ details: mockdetails });
     const areaLogger = logger.getArea();
@@ -99,9 +118,9 @@ describe('Logger', () => {
     areaLogger.info('test message');
 
     const logs = logger.dump();
-    expect(logs.dummy).toBeDefined();
-    expect(logs.dummy).toHaveLength(1);
-    expect(logs.dummy[0].message).toBe('test message');
+    expect(logs.defaultArea).toBeDefined();
+    expect(logs.defaultArea).toHaveLength(1);
+    expect(logs.defaultArea[0].message).toBe('test message');
   });
 
   it('should handle withParentEventId true without parentEventId', () => {
@@ -111,7 +130,7 @@ describe('Logger', () => {
     });
 
     const logs = logger.dump();
-    expect(logs.root).toHaveLength(2);
+    expect(logs.root).toHaveLength(3);
     expect(logs.root[1].type).toBe('error');
     expect(logs.root[1].message).toBe('Parent event ID expected but not found');
   });

@@ -1,2 +1,9 @@
 export { Logger, createLogger } from './Logger';
-export { LogData, LogEntry } from './types';
+export type {
+  LogData,
+  LogEntry,
+  LogEntryType,
+  Details,
+  RootPayload,
+} from './types';
+export { prettyError } from './utils';

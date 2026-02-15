@@ -10,8 +10,10 @@ export type Method =
   | 'trace'
   | 'connect';
 
+export type LogEntryType = 'info' | 'warn' | 'error' | 'log' | 'debug';
+
 export type LogEntry = {
-  type: 'info' | 'warn' | 'error';
+  type: LogEntryType;
   message: string;
   payload?: object;
   timestamp: number;
@@ -35,4 +37,6 @@ export interface LoggerOptions {
   parentEventId?: string;
   withParentEventId?: boolean;
   method?: Method;
+  overrideEventId?: string;
+  defaultArea?: string;
 }
