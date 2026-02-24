@@ -1,5 +1,9 @@
 import { init } from '@paralleldrive/cuid2';
-import { createRootLogEntry, prettyError } from './utils';
+import {
+  createRootLogEntry,
+  prettyError,
+  processProductionLogData,
+} from './utils';
 import type { LogData, LoggerOptions, LogEntry, LogEntryType } from './types';
 
 export class Logger {
@@ -77,6 +81,11 @@ export class Logger {
   public dump(): LogData {
     this.finalizeRootMessage();
     return this.log;
+  }
+
+  public dumpProduction(): LogData {
+    this.finalizeRootMessage();
+    return processProductionLogData(this.log);
   }
 
   public appendLogData(logData: LogData): void {

@@ -1,4 +1,9 @@
-import { CreateRootLogEntryOptions, LogData, RootPayload } from './types';
+import {
+  CreateRootLogEntryOptions,
+  LogData,
+  LogEntry,
+  RootPayload,
+} from './types';
 
 export const prettyStack = (stack?: string): string[] => {
   if (!stack) return [];
@@ -61,4 +66,28 @@ export const createRootLogEntry = ({
   }
 
   return rootLogEntry;
+};
+
+export const removeEmptyAreas = (logData: LogData) => {
+  const newLogData: LogData = {};
+  for (const [key, value] of Object.entries(logData)) {
+    if (value.length > 0) {
+      newLogData[key] = value;
+    }
+  }
+  return newLogData;
+};
+
+export const excludeDebugLogs = (logEntries: LogEntry[]) => {
+  return logEntries.filter((entry) => entry.type !== 'debug');
+};
+
+export const processProductionLogData = (logData: LogData) => {
+  const newLogData: LogData = {};
+  for (const [key, value] of Object.entries(logData)) {
+    if (key !== 'root') {
+      newLogData[key] = excludeDebugLogs(value);
+    }
+  }
+  return removeEmptyAreas(newLogData);
 };

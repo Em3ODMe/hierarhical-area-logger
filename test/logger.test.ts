@@ -92,6 +92,14 @@ describe('Logger', () => {
     );
   });
 
+  it('should create new area logger', () => {
+    const logger = createLogger({ details: mockdetails });
+    logger.getArea('test-area');
+
+    const logs = logger.dump();
+    expect(logs['test-area']).toHaveLength(0);
+  });
+
   it('should add new records to the log', () => {
     const logger = createLogger({ details: mockdetails });
     const areaLogger = logger.getArea('test-area');
@@ -109,6 +117,27 @@ describe('Logger', () => {
     expect(logs['test-area'][2].message).toBe('test error');
     expect(logs['test-area'][3].message).toBe('test debug');
     expect(logs['test-area'][4].message).toBe('test log');
+  });
+
+  it('should add new records to the log and exclude empty areas', () => {
+    const logger = createLogger({ details: mockdetails });
+    const areaLogger = logger.getArea('test-area');
+
+    logger.getArea('test-area-empty');
+
+    areaLogger.info('test message');
+    areaLogger.warn('test warning');
+    areaLogger.error('test error');
+    areaLogger.debug('test debug');
+    areaLogger.log('test log');
+
+    const logs = logger.dumpProduction();
+    expect(logs['test-area-empty']).toBeUndefined();
+    expect(logs['test-area']).toHaveLength(4);
+    expect(logs['test-area'][0].message).toBe('test message');
+    expect(logs['test-area'][1].message).toBe('test warning');
+    expect(logs['test-area'][2].message).toBe('test error');
+    expect(logs['test-area'][3].message).toBe('test log');
   });
 
   it('should use default area name when no name provided', () => {
